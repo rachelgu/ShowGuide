@@ -176,16 +176,11 @@ C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Dia
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.IO.Compression.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.IO.FileSystem.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.IO.FileSystem.Primitives.dll
-C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.IO.Pipes.AccessControl.dll
-C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.IO.Pipes.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Reflection.Metadata.dll
-C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Security.AccessControl.dll
-C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Security.Claims.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Security.Cryptography.Algorithms.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Security.Cryptography.Encoding.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Security.Cryptography.Primitives.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
-C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Security.Principal.Windows.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Text.Encoding.CodePages.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.ValueTuple.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Xml.ReaderWriter.dll
@@ -209,7 +204,6 @@ C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Data.Ed
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Data.OData.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Owin.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Owin.Host.SystemWeb.dll
-C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Owin.Security.Cookies.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Owin.Security.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Owin.Security.Facebook.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\Microsoft.Owin.Security.Google.dll
@@ -298,3 +292,11 @@ C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\obj\Debug\ShowGuide.c
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\obj\Debug\ShowGuide.csproj.CopyComplete
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\obj\Debug\ShowGuide.dll
 C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\obj\Debug\ShowGuide.pdb
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\Microsoft.Win32.Primitives.dll
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Diagnostics.DiagnosticSource.dll
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Globalization.Calendars.dll
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.IO.Compression.ZipFile.dll
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Net.Http.dll
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Net.Sockets.dll
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\raquelguedes\Documents\GitHub\ShowGuide\ShowGuide\bin\roslyn\System.Threading.Tasks.Extensions.dll
