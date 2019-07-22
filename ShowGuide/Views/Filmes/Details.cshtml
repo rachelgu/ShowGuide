@@ -1,0 +1,100 @@
+﻿@model ShowGuide.Models.Filme
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Filme</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+
+        <dd class="multiLine">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Categorias)
+        </dt>
+        <dd>
+            @foreach (var categoria in Model.Categorias)
+            {
+                @Html.DisplayFor(model => categoria.Nome)
+                if (!categoria.Equals(Model.Categorias.Last()))
+                {<text>, </text>}
+        }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataLancamento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataLancamento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Elenco)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Elenco)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TraillerLink)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TraillerLink)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+@using (Html.BeginForm("CreateComentario", "Filmes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+
+    @Html.Hidden("FilmeId",Model.Id)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.TextArea("Texto", htmlAttributes: new { @class = "form-control", required = "required" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Enviar" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+<div>
+    @foreach(var comentario in Model.Comentraios)
+    {
+    <div>
+        <p class="multiLine">@Html.Raw(comentario.Texto)</p><br />
+        @Html.Raw(comentario.Utilizador.Nome)<br />
+        @Html.Raw(comentario.Data)<br />
+    </div>
+    }
+</div>

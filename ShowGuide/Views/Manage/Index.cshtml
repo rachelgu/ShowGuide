@@ -1,0 +1,10 @@
+﻿@model ShowGuide.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>Olá, @Html.DisplayFor(m => m.Nome)</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<hr />
+@Html.ActionLink("Alterar Palavra-Chave", "ChangePassword", new object { }, new { @class = "btn btn-primary" })
