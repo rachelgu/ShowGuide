@@ -26,6 +26,15 @@
     </div>
 </div>
 <div class="card mt-4">
+    @if (!ViewBag.error.Equals(""))
+    {
+        <p class="text-danger mt-2 text-center">@ViewBag.error</p>
+    }
+    @if (!ViewBag.success.Equals(""))
+    {
+        <p class="text-success mt-2 text-center">@ViewBag.success</p>
+    }
+
     <table class="table">
         <tr>
             <th>
@@ -65,3 +74,15 @@
 
     </table>
 </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        setTimeout(function () {
+            $(".text-danger").hide();
+            $(".text-success").hide();
+        }, 3000);
+    </script>
+}

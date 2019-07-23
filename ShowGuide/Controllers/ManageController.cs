@@ -123,16 +123,19 @@ namespace ShowGuide.Controllers
 
         // GET: /Manage/Users
         [Authorize(Roles = "Admin")] //dá permições ao Admin
-        public ActionResult Users(int filtroAdmin = -1, string search = "")
+        public ActionResult Users(int filtroAdmin = -1, string search = "", bool alterado = false)
         {
             //passa o id do role de administrador para a view
             string adminRId= db.Roles.Where(r => r.Name.Equals("Admin")).First().Id;
             ViewBag.adminId = adminRId;
+            ViewBag.alterado = alterado;
             //guarda a pesquisa no viewbag para a view poder saber que termos estão definidos
             ViewBag.search = search;
             ViewBag.filtroAdmin = filtroAdmin;
-            //carrega querable de users, remove o primeiro administrador para impedir alterações
-            IQueryable<ApplicationUser> list = db.Users.Where(u => !u.Email.Equals("admin@admin.adm"));
+            //id do utilizador autenticado
+            string userId = User.Identity.GetUserId();
+            //carrega querable de users, remove o próprio utilizador para impedir alterações
+            IQueryable<ApplicationUser> list = db.Users.Where(u => !u.Id.Equals(userId));
             //se houver termo de pesquisa, filtra com esta
             if (!search.Equals("")) list = list.Where(u => u.Nome.Contains(search));
             if (filtroAdmin == 0) //filtra por só Administradores
@@ -160,7 +163,7 @@ namespace ShowGuide.Controllers
                 if (UserManager.IsInRole(user.Id, "Admin")) UserManager.RemoveFromRole(user.Id, "Admin");
                 else UserManager.AddToRole(user.Id, "Admin");
             }
-            return RedirectToAction("Users", new { search, filtroAdmin });
+            return RedirectToAction("Users", new { search, filtroAdmin, alterado=true });
         }
         
 

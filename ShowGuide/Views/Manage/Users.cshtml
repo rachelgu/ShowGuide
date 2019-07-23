@@ -8,7 +8,7 @@
 
 <div class="card">
     <div class="card-body">
-        @using (Html.BeginForm("Userss", "Manage", FormMethod.Get, new { @class = "row" }))
+        @using (Html.BeginForm("Users", "Manage", FormMethod.Get, new { @class = "row" }))
         {
             <div class="form-group col-lg mt-2 mb-2">
                 <input type="search" name="search" class="form-control col-12" value="@ViewBag.search" />
@@ -21,17 +21,17 @@
                     <div class="form-group mb-1 mt-1">
                         <div class="form-check d-md-inline">
                             <label class="form-check-label">
-                                @Html.RadioButton("filtroAdmin", -1, (int)ViewBag.filtroVistos == -1)Todos
+                                @Html.RadioButton("filtroAdmin", -1, (int)ViewBag.filtroAdmin == -1)Todos
                             </label>
                         </div>
                         <div class="form-check d-md-inline">
                             <label class="form-check-label">
-                                @Html.RadioButton("filtroAdmin", 0, (int)ViewBag.filtroVistos == 0)Só os Administradores
+                                @Html.RadioButton("filtroAdmin", 0, (int)ViewBag.filtroAdmin == 0)Só os Administradores
                             </label>
                         </div>
                         <div class="form-check d-md-inline">
                             <label class="form-check-label">
-                                @Html.RadioButton("filtroAdmin", 1, (int)ViewBag.filtroVistos == 1)Só os não Administradores
+                                @Html.RadioButton("filtroAdmin", 1, (int)ViewBag.filtroAdmin == 1)Só os não Administradores
                             </label>
                         </div>
                     </div>
@@ -41,6 +41,10 @@
     </div>
 </div>
 <div class="card mt-4">
+    @if (ViewBag.alterado)
+    {
+        <p class="text-success mt-2 text-center">Alterações guardadas com sucesso</p>
+    }
     <table class="table">
         <tr>
             <th>
@@ -63,7 +67,9 @@
 
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(model => user.Id)
-                        @Html.CheckBox("isAdministrator",user.Roles.Any(r => r.RoleId == ViewBag.adminId), new { onchange="this.form.submit()"})
+                        @Html.Hidden("search", (string)ViewBag.search)
+                        @Html.Hidden("filtroAdmin", (int)ViewBag.filtroAdmin)
+                        @Html.CheckBox("isAdministrator", user.Roles.Any(r => r.RoleId == ViewBag.adminId), new { onchange = "this.form.submit()" })
                     }
                 </td>
             </tr>
@@ -80,3 +86,13 @@
 
     </table>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        setTimeout(function () {
+            $(".text-success").hide();
+        }, 3000);
+    </script>
+}

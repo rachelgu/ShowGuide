@@ -18,11 +18,12 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { }, new {@class= "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Sobre", "About", "Home", new { }, new { @class = "nav-link" })</li>
                 <li class="nav-item">@Html.ActionLink("Filmes", "Index", "Filmes", new { }, new { @class = "nav-link" })</li>
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item">@Html.ActionLink("Categorias", "Index", "Categorias", new { }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Users", "Users", "Manage", new { }, new { @class = "nav-link" })</li>
                 }
             </ul>
             @Html.Partial("_LoginPartial")

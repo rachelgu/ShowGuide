@@ -16,10 +16,14 @@ namespace ShowGuide.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categorias
-        public ActionResult Index(string search = "")
+        public ActionResult Index(string search = "", string error = "", string success="")
         {
             //guarda a pesquisa no viewbag para a view poder saber que termos estão definidos
             ViewBag.search = search;
+            //passa para a view se ha menssagem de erro
+            ViewBag.error = error;
+            //passa para a view se ha menssagem de sucesso
+            ViewBag.success = success;
             //aplica o termo de pesquisa ao select a BD caso este esteja definido
             if (search.Equals("")) return View(db.Categorias.ToList());
             else return View(db.Categorias.Where(f => f.Nome.Contains(search)).ToList());
@@ -76,7 +80,7 @@ namespace ShowGuide.Controllers
                 db.Entry(categoria).State = EntityState.Modified;
                 db.SaveChanges();
                 //volta para a lista de categorias
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { success = "Categoria alterada com sucesso"});
             }
             return View(categoria);
         }
@@ -85,15 +89,21 @@ namespace ShowGuide.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            Categoria categoria = db.Categorias.Find(id);
-            if(categoria == null) //se a categoria não for encontrada, volta para  a lista de categorias
+            try
             {
-                return RedirectToAction("Index");
+                Categoria categoria = db.Categorias.Find(id);
+                if (categoria == null) //se a categoria não for encontrada, volta para  a lista de categorias
+                {
+                    return RedirectToAction("Index");
+                }
+                db.Categorias.Remove(categoria);
+                db.SaveChanges();
+            } catch(Exception)
+            {
+                return RedirectToAction("Index", new { error="Ocorreu um erro a apagar a categoria, provavelmente existe um filme associado."});
             }
-            db.Categorias.Remove(categoria);
-            db.SaveChanges();
             //volta para a lista de categorias
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { success  = "Categoria removida com sucesso"});
         }
 
         protected override void Dispose(bool disposing)

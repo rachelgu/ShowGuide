@@ -129,6 +129,8 @@ namespace ShowGuide.Controllers
             }
             //carrega no viewbag para a view a lista de categorias
             ViewBag.Categorias = new SelectList(db.Categorias, "Id", "Nome");
+            //carrega no viewbag para a view a lista de categorias selecionadas
+            ViewBag.sel_Categorias = filme.Categorias.Select(i => i.Id).ToList();
             return View(filme);
         }
 

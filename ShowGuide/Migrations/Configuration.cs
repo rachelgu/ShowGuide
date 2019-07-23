@@ -112,6 +112,15 @@ namespace ShowGuide.Migrations
                 new Comentario {Id=++id, Texto = "Uma obra de arte !",FilmeId=5, Data = new DateTime(2019,3,11,19,23,33) , UserId =  manager.FindByEmail(users[1].Email).Id},
                 new Comentario {Id=++id, Texto = "Estes atores são dignos de Oscar!",FilmeId=7, Data = new DateTime(2019,1,7,11,23,33) , UserId =  manager.FindByEmail(users[2].Email).Id},
                 new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=7, Data = new DateTime(2019,1,12,22,14,33) , UserId =  manager.FindByEmail(users[1].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=12, Data = new DateTime(2019,1,12,22,14,33) , UserId =  manager.FindByEmail(users[3].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=10, Data = new DateTime(2019,1,12,22,14,33) , UserId =  manager.FindByEmail(users[2].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=1, Data = new DateTime(2018,1,12,22,14,33) , UserId =  manager.FindByEmail(users[3].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=4, Data = new DateTime(2018,1,15,22,14,33) , UserId =  manager.FindByEmail(users[2].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=6, Data = new DateTime(2019,7,20,22,14,33) , UserId =  manager.FindByEmail(users[1].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=8, Data = new DateTime(2017,11,9,22,14,33) , UserId =  manager.FindByEmail(users[2].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=2, Data = new DateTime(2019,12,12,22,14,33) , UserId =  manager.FindByEmail(users[3].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=11, Data = new DateTime(2019,12,12,22,14,33) , UserId =  manager.FindByEmail(users[2].Email).Id},
+                new Comentario {Id=++id, Texto = "Espetacular!",FilmeId=9, Data = new DateTime(2019,12,12,22,14,33) , UserId =  manager.FindByEmail(users[3].Email).Id},
             };
             comentarios.ForEach(dd => context.Comentarios.AddOrUpdate(d => d.Id, dd));
             context.SaveChanges();

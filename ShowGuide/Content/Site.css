@@ -76,9 +76,6 @@ textarea {
     .imageFilme img {
         max-width: 100%;
     }
-    .title-sizes .img-responsive {
-        height: 250px;
-    }
 }
 
 @media (min-width: 992px) {
