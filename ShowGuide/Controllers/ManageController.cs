@@ -15,6 +15,7 @@ namespace ShowGuide.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -119,6 +120,50 @@ namespace ShowGuide.Controllers
 
             return RedirectToAction("Index", "Manage", new { Message = ManageMessageId.NameChangeError });
         }
+
+        // GET: /Manage/Users
+        [Authorize(Roles = "Admin")] //dá permições ao Admin
+        public ActionResult Users(int filtroAdmin = -1, string search = "")
+        {
+            //passa o id do role de administrador para a view
+            string adminRId= db.Roles.Where(r => r.Name.Equals("Admin")).First().Id;
+            ViewBag.adminId = adminRId;
+            //guarda a pesquisa no viewbag para a view poder saber que termos estão definidos
+            ViewBag.search = search;
+            ViewBag.filtroAdmin = filtroAdmin;
+            //carrega querable de users, remove o primeiro administrador para impedir alterações
+            IQueryable<ApplicationUser> list = db.Users.Where(u => !u.Email.Equals("admin@admin.adm"));
+            //se houver termo de pesquisa, filtra com esta
+            if (!search.Equals("")) list = list.Where(u => u.Nome.Contains(search));
+            if (filtroAdmin == 0) //filtra por só Administradores
+            {
+                list = list.Where(u => u.Roles.Any(r => r.RoleId.Equals(adminRId)));
+            }
+            else if (filtroAdmin == 1) //filtra por só NÃO Administradores
+            {
+                list = list.Where(u => !u.Roles.Any(r => r.RoleId.Equals(adminRId)));
+            }
+            //devole lista de utilizadores com os filtros aplicados
+            return View(list.ToList());
+        }
+
+        // GET: /Manage/Users
+        [Authorize(Roles = "Admin")] //dá permições ao Admin
+        public ActionResult ToggleAdmin([Bind(Include = "Id")] ApplicationUser user, int filtroAdmin = -1, string search = "")
+        {
+            //carrega os dados do filme com os que estão na BD
+            user = UserManager.FindById(user.Id);
+            //se o utilizador for encontrado
+            if (user != null)
+            {
+                //se po utilizador for administrador, remove de admin, caso contrario adiciona como administrador
+                if (UserManager.IsInRole(user.Id, "Admin")) UserManager.RemoveFromRole(user.Id, "Admin");
+                else UserManager.AddToRole(user.Id, "Admin");
+            }
+            return RedirectToAction("Users", new { search, filtroAdmin });
+        }
+        
+
         //
         // GET: /Manage/AddPhoneNumber
         public ActionResult AddPhoneNumber()

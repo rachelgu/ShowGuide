@@ -17,6 +17,7 @@ namespace ShowGuide.Models
         [Key]
         public int Id { get; set; }
 
+        //Nome da categoria
         [Required]
         public string Nome { get; set; }
 

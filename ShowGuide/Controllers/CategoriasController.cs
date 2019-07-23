@@ -18,7 +18,9 @@ namespace ShowGuide.Controllers
         // GET: Categorias
         public ActionResult Index(string search = "")
         {
+            //guarda a pesquisa no viewbag para a view poder saber que termos estão definidos
             ViewBag.search = search;
+            //aplica o termo de pesquisa ao select a BD caso este esteja definido
             if (search.Equals("")) return View(db.Categorias.ToList());
             else return View(db.Categorias.Where(f => f.Nome.Contains(search)).ToList());
         }
@@ -49,14 +51,15 @@ namespace ShowGuide.Controllers
         // GET: Categorias/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (id == null) // se o id não estiver definido volta para a lista de categorias
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
+            //procura a categoria
             Categoria categoria = db.Categorias.Find(id);
-            if (categoria == null)
+            if (categoria == null) //se a categoria não for encontrada volta para a lista de categorias
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             return View(categoria);
         }
@@ -72,6 +75,7 @@ namespace ShowGuide.Controllers
             {
                 db.Entry(categoria).State = EntityState.Modified;
                 db.SaveChanges();
+                //volta para a lista de categorias
                 return RedirectToAction("Index");
             }
             return View(categoria);
@@ -82,12 +86,13 @@ namespace ShowGuide.Controllers
         public ActionResult Delete(int id)
         {
             Categoria categoria = db.Categorias.Find(id);
-            if(categoria == null)
+            if(categoria == null) //se a categoria não for encontrada, volta para  a lista de categorias
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             db.Categorias.Remove(categoria);
             db.SaveChanges();
+            //volta para a lista de categorias
             return RedirectToAction("Index");
         }
 

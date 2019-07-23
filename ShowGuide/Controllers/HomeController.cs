@@ -10,7 +10,7 @@ namespace ShowGuide.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToActionPermanent("Index","Filmes");//a página por defeito é a página da lista de filmes
         }
 
         public ActionResult About()

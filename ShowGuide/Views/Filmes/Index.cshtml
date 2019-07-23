@@ -20,20 +20,60 @@
             <div class="col-lg-2  mt-2 mb-2">
                 <button type="submit" class="btn btn-success col-12">Pesquisar</button>
             </div>
+            if (Request.IsAuthenticated)
+            {
+                <div class="col-12 text-center">
+                    <div class="card">
+                        <div class="form-group mb-1 mt-1">
+                            <div class="form-check d-md-inline">
+                                <label class="form-check-label">
+                                    @Html.RadioButton("filtroVistos", -1, (int)ViewBag.filtroVistos == -1)Todos
+                                </label>
+                            </div>
+                            <div class="form-check d-md-inline">
+                                <label class="form-check-label">
+                                    @Html.RadioButton("filtroVistos", 0, (int)ViewBag.filtroVistos == 0)Só os vistos
+                                </label>
+                            </div>
+                            <div class="form-check d-md-inline">
+                                <label class="form-check-label">
+                                    @Html.RadioButton("filtroVistos", 1, (int)ViewBag.filtroVistos == 1)Só os não vistos
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         }
     </div>
 </div>
 <section class="row title-sizes mt-4">
-    @foreach (var item in Model)
+    @foreach (var filme in Model)
     {
-        <figure class="col-md-3 col-sm-6  pretty-figure">
-            <a href="@Url.Action("Details","Filmes",new { id = item.Id})">
-                <img src="~/Imagens/@Html.DisplayFor(modelItem => item.Id)@Html.DisplayFor(modelItem => item.ImageExtension)" alt="Prospect (2018)"
-                     class="img-responsive">
-            </a>
-            <figcaption class="no-rating">
-                <a href="@Url.Action("Details","Filmes",new { id = item.Id})">@Html.DisplayFor(modelItem => item.Titulo)</a>
+    <figure class="col-md-3 col-sm-6  pretty-figure">
+        <a href="@Url.Action("Details","Filmes",new { id = filme.Id})">
+            <img src="~/Imagens/@Html.DisplayFor(modelItem => filme.Id)@Html.DisplayFor(modelItem => filme.ImageExtension)" alt="Prospect (2018)"
+                 class="img-responsive">
+        </a>
+        <figcaption class="no-rating">
+            <a href="@Url.Action("Details","Filmes",new { id = filme.Id})">@Html.DisplayFor(modelItem => filme.Titulo)</a>
+        </figcaption>
+            @if (Request.IsAuthenticated)
+            {
+        <figcaption class="no-rating">
+            @using (Html.BeginForm("ToggleViewed", "Filmes", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken();
+                @Html.HiddenFor(f => filme.Id);
+                @Html.Hidden("search", (string)ViewBag.search);
+                @Html.Hidden("filtroVistos", (int)ViewBag.filtroVistos);
+                <label class="form-check-label">
+                    @Html.CheckBox("viewed", filme.Utilizadores.Any(u => u.UserName.Equals(User.Identity.Name)), new { onchange = "this.form.submit()" })
+                Visto?
+                </label>
+            }
             </figcaption>
+             }
         </figure>
 
     }
