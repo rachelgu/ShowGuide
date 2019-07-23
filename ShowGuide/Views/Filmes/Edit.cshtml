@@ -1,11 +1,11 @@
 ﻿@model ShowGuide.Models.Filme
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar " + Html.DisplayFor(model => model.Titulo);
 }
 
 <h2>
-    Editar @Html.DisplayFor(model => model.Titulo)</h2>
+    Editar @ViewBag.Title</h2>
 <hr />
 
 

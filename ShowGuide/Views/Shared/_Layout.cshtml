@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/chosen.css")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
+    @*Menu principal do site*@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
         @Html.ActionLink("Show Guide", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

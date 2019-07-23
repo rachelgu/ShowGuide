@@ -4,10 +4,12 @@
     ViewBag.Title = "Filmes";
 }
 <h2>@ViewBag.Title</h2>
+@* Caixa de pesquisa*@
 <div class="card">
     <div class="card-body">
         @using (Html.BeginForm("Index", "Filmes", FormMethod.Get, new { @class = "row" }))
         {
+            @* Botão de registo de filmes para o administrador *@
             if (User.IsInRole("Admin"))
             {
                 <div class="col-lg-2 mt-2 mb-2">
@@ -20,6 +22,8 @@
             <div class="col-lg-2  mt-2 mb-2">
                 <button type="submit" class="btn btn-success col-12">Pesquisar</button>
             </div>
+
+            @* Filtro de filmes vistos ou não visatos caso o utilizador esteja autenticado*@
             if (Request.IsAuthenticated)
             {
                 <div class="col-12 text-center">
@@ -47,6 +51,7 @@
         }
     </div>
 </div>
+@* Lista de filmes*@
 <section class="row title-sizes mt-4">
     @foreach (var filme in Model)
     {
@@ -58,25 +63,29 @@
         <figcaption class="no-rating">
             <a href="@Url.Action("Details","Filmes",new { id = filme.Id})">@Html.DisplayFor(modelItem => filme.Titulo)</a>
         </figcaption>
-            @if (Request.IsAuthenticated)
-            {
-        <figcaption class="no-rating">
-            @using (Html.BeginForm("ToggleViewed", "Filmes", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken();
-                @Html.HiddenFor(f => filme.Id);
-                @Html.Hidden("search", (string)ViewBag.search);
-                @Html.Hidden("filtroVistos", (int)ViewBag.filtroVistos);
-                <label class="form-check-label">
-                    @Html.CheckBox("viewed", filme.Utilizadores.Any(u => u.UserName.Equals(User.Identity.Name)), new { onchange = "this.form.submit()" })
-                Visto?
-                </label>
-            }
+
+        @* Checkbox que indica se o utilizador viu ou não o filme *@
+        @if (Request.IsAuthenticated)
+        {
+            <figcaption class="no-rating">
+                @using (Html.BeginForm("ToggleViewed", "Filmes", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.HiddenFor(f => filme.Id);
+                    @Html.Hidden("search", (string)ViewBag.search);
+                    @Html.Hidden("filtroVistos", (int)ViewBag.filtroVistos);
+                    <label class="form-check-label">
+                        @Html.CheckBox("viewed", filme.Utilizadores.Any(u => u.UserName.Equals(User.Identity.Name)), new { onchange = "this.form.submit()" })
+                        Visto?
+                    </label>
+                }
             </figcaption>
-             }
-        </figure>
+        }
+    </figure>
 
     }
+
+    @* Caso não exista filmes*@
     @if (Model.Count() == 0)
     {
         <div style="text-align: center;" class="w-100 mt-2">

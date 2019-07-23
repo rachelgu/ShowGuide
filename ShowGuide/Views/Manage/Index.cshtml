@@ -1,14 +1,19 @@
 ﻿@model ShowGuide.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Dados Pessoais";
 }
 
 <h2 class="row">Olá, @Html.DisplayFor(m => m.Nome)</h2>
 
+@* menssagem de sucesso *@
 <p class="text-success">@ViewBag.StatusMessage</p>
 <hr />
+
+@* alterar palavra-chave *@
 @Html.ActionLink("Alterar Palavra-Chave", "ChangePassword", new object { }, new { @class = "btn btn-primary" })
 
+
+@* formulário para alterar o nome do utilizador *@
 @using (Html.BeginForm("ChangeNome", "Manage", FormMethod.Post))
 {
     @Html.AntiForgeryToken()

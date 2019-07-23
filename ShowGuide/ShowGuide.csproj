@@ -213,6 +213,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\ShowG.mdf" />
+    <Content Include="App_Data\ShowG_log.ldf">
+      <DependentUpon>ShowG.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -308,7 +312,6 @@
     <Content Include="Views\Categorias\Edit.cshtml" />
     <Content Include="Views\Categorias\Index.cshtml" />
     <Content Include="Views\Filmes\Create.cshtml" />
-    <Content Include="Views\Filmes\Delete.cshtml" />
     <Content Include="Views\Filmes\Details.cshtml" />
     <Content Include="Views\Filmes\Edit.cshtml" />
     <Content Include="Views\Filmes\Index.cshtml" />
@@ -323,9 +326,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Manage\Users.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
