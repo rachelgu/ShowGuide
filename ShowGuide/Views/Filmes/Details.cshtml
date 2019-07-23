@@ -1,100 +1,123 @@
 ﻿@model ShowGuide.Models.Filme
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalhes de um filme";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Filme</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Titulo)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Titulo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-
-        <dd class="multiLine">
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Categorias)
-        </dt>
-        <dd>
-            @foreach (var categoria in Model.Categorias)
-            {
-                @Html.DisplayFor(model => categoria.Nome)
-                if (!categoria.Equals(Model.Categorias.Last()))
-                {<text>, </text>}
-        }
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DataLancamento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DataLancamento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Elenco)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Elenco)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TraillerLink)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TraillerLink)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-
-@using (Html.BeginForm("CreateComentario", "Filmes", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-<div class="form-horizontal">
-
-    @Html.Hidden("FilmeId",Model.Id)
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.TextArea("Texto", htmlAttributes: new { @class = "form-control", required = "required" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Enviar" class="btn btn-default" />
-        </div>
-    </div>
-</div>
-}
-<div>
-    @foreach(var comentario in Model.Comentraios)
+    @Html.ActionLink("Voltar", "Index", new { }, new { @class = "btn btn-secondary mr-2" })
+    @if (User.IsInRole("Admin"))
     {
-    <div>
-        <p class="multiLine">@Html.Raw(comentario.Texto)</p><br />
-        @Html.Raw(comentario.Utilizador.Nome)<br />
-        @Html.Raw(comentario.Data)<br />
+        @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary mr-2" })
+
+        using (Html.BeginForm("Delete", "Filmes", FormMethod.Post, new { @class = "d-inline", onsubmit = "return verifyDelete();" }))
+        {
+
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        }
+    }
+</div>
+<hr />
+<h4>@Html.DisplayFor(model => model.Titulo)</h4>
+<div class="d-md-flex flex-row">
+    <div class="imageFilme">
+        <img src="~/Imagens/@Model.Id@Html.DisplayFor(model => model.ImageExtension)" />
     </div>
+    <div class="d-md-flex flex-column justify-content-center ml-4">
+        <div>
+            <h5>@Html.DisplayNameFor(model => model.Categorias):</h5>
+            <div>
+                @foreach (var categoria in Model.Categorias)
+                {
+                    @Html.DisplayFor(model => categoria.Nome)
+                    if (!categoria.Equals(Model.Categorias.Last()))
+                    {<text>, </text>}
+            }
+            </div>
+        </div>
+        <div class="mt-2">
+            <h5>@Html.DisplayNameFor(model => model.DataLancamento):</h5>
+            <span>
+                @Html.DisplayFor(model => model.DataLancamento)
+            </span>
+        </div>
+        <div class="mt-2">
+            <h5>@Html.DisplayNameFor(model => model.Elenco):</h5>
+            <span>
+                @Html.DisplayFor(model => model.Elenco)
+            </span>
+        </div>
+        <div class="mt-2">
+            <h5>@Html.DisplayNameFor(model => model.TraillerLink):</h5>
+
+            <span>
+                <a href="@Html.DisplayFor(model => model.TraillerLink)">@Html.DisplayFor(model => model.TraillerLink)</a>
+            </span>
+        </div>
+    </div>
+
+</div>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title">@Html.DisplayNameFor(model => model.Descricao):</h5>
+        <hr />
+        <div class="card-text">
+            @Html.DisplayFor(model => model.Descricao)
+        </div>
+    </div>
+</div>
+<br />
+<div class="card pb-4">
+    <div class="card-body">
+        <h4 class="card-title">Comentários</h4>
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("CreateComentario", "Filmes", FormMethod.Post, new { }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="card-body">
+                    <h5 class="card-title">Deixe um comentário</h5>
+                    @Html.Hidden("FilmeId", Model.Id)
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="card-text">
+                        @Html.TextArea("Texto", htmlAttributes: new { @class = "form-control col-12", required = "required" })
+                    </div>
+                    <br />
+                    <input type="submit" value="Enviar" class="btn btn-info card-link float-right" />
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+<div class="mt-4 mb-4">
+    @foreach (var comentario in Model.Comentraios)
+    {
+        <div class="col-12 d-flex justify-content-start flex-column">
+            <div class="card col-lg-6 mt-2 row @{
+        if (User.Identity.IsAuthenticated && User.Identity.Name.Equals(comentario.Utilizador.UserName))
+        {
+            @Html.Raw("align-self-end");
+        }
+        else
+        {
+            @Html.Raw("align-self-start");
+        }
+    }">
+                <div class="card-body">
+                    <p class="card-text multiLine">@Html.Raw(comentario.Texto)</p>
+                </div>
+                <hr />
+                <div class="card-body d-flex justify-content-start flex-row justify-content-between">
+                    <span class="card-link align-self-start">@Html.Raw(comentario.Utilizador.Nome)</span>
+                    <span class="card-link align-self-end">@Html.Raw(comentario.Data)</span>
+                </div>
+            </div>
+        </div>
     }
 </div>

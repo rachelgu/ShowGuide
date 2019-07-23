@@ -7,6 +7,7 @@ namespace ShowGuide.Models
 {
     public class IndexViewModel
     {
+        [Required]
         public string Nome { get; set; }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
@@ -17,6 +18,7 @@ namespace ShowGuide.Models
 
     public class ManageLoginsViewModel
     {
+        [Required]
         public string Nome { get; set; }
         public IList<UserLoginInfo> CurrentLogins { get; set; }
         public IList<AuthenticationDescription> OtherLogins { get; set; }

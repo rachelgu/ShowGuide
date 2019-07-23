@@ -55,12 +55,14 @@ namespace ShowGuide.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                message == ManageMessageId.ChangePasswordSuccess ? "Palavra-Chave alterada com sucesso."
+                : message == ManageMessageId.SetPasswordSuccess ? "Palavra-Chave criada com sucesso"
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.NameChangeSuccess ? "Nome alterado com sucesso"
+                : message == ManageMessageId.NameChangeError ? "O campo nome é obrigatório"
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -100,6 +102,23 @@ namespace ShowGuide.Controllers
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
+        
+        //
+        // POST: /Manage/RemoveLogin
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeNome([Bind(Include = "Nome")] ApplicationUser user) 
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser aUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                aUser.Nome = user.Nome;
+                await UserManager.UpdateAsync(aUser);
+                return RedirectToAction("Index", "Manage", new { Message = ManageMessageId.NameChangeSuccess });
+            }
+
+            return RedirectToAction("Index", "Manage", new { Message = ManageMessageId.NameChangeError });
+        }
         //
         // GET: /Manage/AddPhoneNumber
         public ActionResult AddPhoneNumber()
@@ -376,6 +395,8 @@ namespace ShowGuide.Controllers
 
         public enum ManageMessageId
         {
+            NameChangeSuccess,
+            NameChangeError,
             AddPhoneSuccess,
             ChangePasswordSuccess,
             SetTwoFactorSuccess,

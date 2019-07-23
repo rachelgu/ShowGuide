@@ -10,29 +10,25 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Show Guide", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Filmes", "Index", "Filmes")</li>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li>@Html.ActionLink("Categorias", "Index", "Categorias")</li>
-                    }
-                    </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
+        @Html.ActionLink("Show Guide", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { }, new {@class= "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Filmes", "Index", "Filmes", new { }, new { @class = "nav-link" })</li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">@Html.ActionLink("Categorias", "Index", "Categorias", new { }, new { @class = "nav-link" })</li>
+                }
+            </ul>
+            @Html.Partial("_LoginPartial")
         </div>
-    </div>
+    </nav>
+
     <div class="container body-content">
         @RenderBody()
     </div>
@@ -41,6 +37,11 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/jquery.chosen.js")
     @RenderSection("scripts", required: false)
-    <script>$("select").chosen();</script>
+    <script>
+        $("select").chosen();
+        function verifyDelete() {
+            return confirm("Tem a certeza que pretende eliminar?");
+        }
+    </script>
 </body>
 </html>

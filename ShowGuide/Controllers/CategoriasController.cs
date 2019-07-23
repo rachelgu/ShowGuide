@@ -16,24 +16,11 @@ namespace ShowGuide.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categorias
-        public ActionResult Index()
+        public ActionResult Index(string search = "")
         {
-            return View(db.Categorias.ToList());
-        }
-
-        // GET: Categorias/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Categoria categoria = db.Categorias.Find(id);
-            if (categoria == null)
-            {
-                return HttpNotFound();
-            }
-            return View(categoria);
+            ViewBag.search = search;
+            if (search.Equals("")) return View(db.Categorias.ToList());
+            else return View(db.Categorias.Where(f => f.Nome.Contains(search)).ToList());
         }
 
         // GET: Categorias/Create
@@ -90,27 +77,15 @@ namespace ShowGuide.Controllers
             return View(categoria);
         }
 
-        // GET: Categorias/Delete/5
-        public ActionResult Delete(int? id)
+        // POST: Categorias/Delete/5
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Categoria categoria = db.Categorias.Find(id);
-            if (categoria == null)
+            if(categoria == null)
             {
                 return HttpNotFound();
             }
-            return View(categoria);
-        }
-
-        // POST: Categorias/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Categoria categoria = db.Categorias.Find(id);
             db.Categorias.Remove(categoria);
             db.SaveChanges();
             return RedirectToAction("Index");

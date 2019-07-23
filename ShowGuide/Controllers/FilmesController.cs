@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -16,9 +17,11 @@ namespace ShowGuide.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Filmes
-        public ActionResult Index()
+        public ActionResult Index(string search = "")
         {
-            return View(db.Filmes.ToList());
+            ViewBag.search = search;
+            if (search.Equals("")) return View(db.Filmes.ToList());
+            else return View(db.Filmes.Where(f => f.Titulo.Contains(search)).ToList());
         }
 
         // GET: Filmes/Details/5
@@ -38,6 +41,7 @@ namespace ShowGuide.Controllers
         }
 
         // GET: Filmes/Create
+        [Authorize(Roles = "Admin")] //dá permições ao Admin
         public ActionResult Create()
         {
             ViewBag.Categorias = new SelectList(db.Categorias, "Id", "Nome");
@@ -49,7 +53,8 @@ namespace ShowGuide.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Titulo,Descricao,DataLancamento,Elenco,TraillerLink")] Filme filme, List<int> Categorias)
+        [Authorize(Roles = "Admin")] //dá permições ao Admin
+        public ActionResult Create([Bind(Include = "Id,Titulo,Descricao,DataLancamento,Elenco,TraillerLink")] Filme filme, HttpPostedFileBase Image, List<int> Categorias)
         {
             if (ModelState.IsValid)
             {
@@ -60,16 +65,25 @@ namespace ShowGuide.Controllers
                 //Para adicionar Lista de categorias aos filmes
                 IQueryable<Categoria> categorias = db.Categorias.Where(a => Categorias.Any(aa => a.Id == aa));
                 filme.Categorias = categorias.ToList();
-
+                //adicionar Imagem
+                if (Image != null)
+                {
+                    filme.ImageExtension = Path.GetExtension(Image.FileName);
+                }
                 db.Filmes.Add(filme);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Image != null)
+                {
+                    Image.SaveAs(Path.Combine(Server.MapPath("~/Imagens/" + filme.Id + filme.ImageExtension)));
+                }
+            return RedirectToAction("Details", new { id = filme.Id});
             }
 
             return View(filme);
         }
 
         // GET: Filmes/Edit/5
+        [Authorize(Roles = "Admin")] //dá permições ao Admin
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -89,9 +103,10 @@ namespace ShowGuide.Controllers
         // POST: Filmes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")] //dá permições ao Admin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Titulo,Descricao,DataLancamento,Elenco,TraillerLink")] Filme filme, List<int> Categorias)
+        public ActionResult Edit([Bind(Include = "Id,Titulo,Descricao,DataLancamento,Elenco,TraillerLink,ImageExtension")] Filme filme, HttpPostedFileBase Image, List<int> Categorias)
         {
             if (ModelState.IsValid)
             {
@@ -114,6 +129,18 @@ namespace ShowGuide.Controllers
                 //adicionamos as categorias selecionadas por o utilizador
                 filme.Categorias = categorias.ToList();
 
+
+                //Editar Imagem
+                if (Image != null)
+                {
+                    if (System.IO.File.Exists(Server.MapPath("~/Imagens/" + filme.Id + filme.ImageExtension)))
+                    {
+                        System.IO.File.Delete(Server.MapPath("~/Imagens/" + filme.Id + filme.ImageExtension));
+                    }
+                    filme.ImageExtension = Path.GetExtension(Image.FileName);
+                    Image.SaveAs(Path.Combine(Server.MapPath("~/Imagens/" + filme.Id + filme.ImageExtension)));
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = filme.Id});
             }
@@ -122,27 +149,34 @@ namespace ShowGuide.Controllers
             return View(filme);
         }
 
-        // GET: Filmes/Delete/5
-        public ActionResult Delete(int? id)
+        // POST: Filmes/Delete/5
+        [Authorize(Roles = "Admin")] //dá permições ao Admin
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Filme filme = db.Filmes.Find(id);
-            if (filme == null)
+            if(filme == null)
             {
                 return HttpNotFound();
             }
-            return View(filme);
-        }
-
-        // POST: Filmes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Filme filme = db.Filmes.Find(id);
+            //remover todas as categorias associadas ao filme
+            filme.Categorias.Clear();
+            //eliminar todos os comentários associados ao filme
+            List<Comentario> comentarios = filme.Comentraios.ToList();
+            foreach (var comentario in comentarios)
+            {
+                db.Comentarios.Remove(comentario);
+            }
+            //Eliminar Imagem
+            if (filme.ImageExtension != null)
+            {
+                if (System.IO.File.Exists(Server.MapPath("~/Imagens/" + filme.Id + filme.ImageExtension)))
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Imagens/" + filme.Id + filme.ImageExtension));
+                }
+            }
+            //eliminar o filme
             db.Filmes.Remove(filme);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -180,15 +214,6 @@ namespace ShowGuide.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        protected void UpdateCategoriasEntity(ICollection<Categoria> categorias)
-        {
-            if (categorias == null) return;
-            foreach (var categoria in categorias)
-            {
-                db.Entry(categoria).State = EntityState.Modified;
-            }
         }
     }
 }

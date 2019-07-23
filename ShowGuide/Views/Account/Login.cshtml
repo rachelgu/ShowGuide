@@ -13,35 +13,32 @@
                 @Html.AntiForgeryToken()
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, "Email", htmlAttributes: new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Email, "Email", htmlAttributes: new { @class = "col-md-3 control-label" })
+                    <div class="col-md-9">
                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, "Palavra-Chave", htmlAttributes: new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Password, "Palavra-Chave", htmlAttributes: new { @class = "col-md-3 control-label" })
+                    <div class="col-md-9">
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
+                <div class="form-grou rowp">
                         <div class="checkbox">
                             @Html.CheckBoxFor(m => m.RememberMe)
                             @Html.LabelFor(m => m.RememberMe)
                         </div>
-                    </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Entrar" class="btn btn-default" />
-                    </div>
+                <div class="form-group row">
+                        <input type="submit" value="Entrar" class="btn btn-primary mr-2" />
+                        @Html.ActionLink("Registar", "Register", "Account", new { @class = "btn btn-secondary" })
                 </div>
                 <p>
-                    @Html.ActionLink("Registar", "Register")
+                    
                 </p>
                 @* Enable this once you have account confirmation enabled for password reset functionality
                     <p>

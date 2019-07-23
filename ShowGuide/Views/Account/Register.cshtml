@@ -11,34 +11,32 @@
     <h4>Create a new account.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, "Email", htmlAttributes: new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+    <div class="form-group row">
+        @Html.LabelFor(m => m.Email, "Email", htmlAttributes: new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Nome, "Nome", htmlAttributes: new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+    <div class="form-group row">
+        @Html.LabelFor(m => m.Nome, "Nome", htmlAttributes: new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
             @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, "Palavra-Chave", htmlAttributes: new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+    <div class="form-group row">
+        @Html.LabelFor(m => m.Password, "Palavra-Chave", htmlAttributes: new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, "Confirmar Palavra-Chave", htmlAttributes: new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+    <div class="form-group row">
+        @Html.LabelFor(m => m.ConfirmPassword, "Confirmar Palavra-Chave", htmlAttributes: new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Registar" />
-        </div>
+    <div class="form-group row">
+            <input type="submit" class="btn btn-primary" value="Registar" />
     </div>
 }
 
